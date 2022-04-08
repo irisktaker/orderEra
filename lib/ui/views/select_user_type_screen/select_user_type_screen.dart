@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:orderera_dio_http/bloc/models/place_type_response_model.dart';
+import 'package:orderera_dio_http/bloc/models/get_place_type_response_model.dart';
+import 'package:orderera_dio_http/ui/views/client/address/client_address_screen.dart';
 import 'package:orderera_dio_http/ui/views/home_screen/home_screen.dart';
 import 'package:orderera_dio_http/ui/views/select_user_type_screen/select_user_type_bloc.dart';
 
@@ -42,7 +43,7 @@ class _SelectUserTypeScreenState extends State<SelectUserTypeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<PlaceTypeResponseModel>(
+      body: StreamBuilder<GetPlaceTypeResponseModel>(
         stream: _bloc.responseStream.stream,
         builder: (context, snapshot) {
           return snapshot.hasData
@@ -59,7 +60,9 @@ class _SelectUserTypeScreenState extends State<SelectUserTypeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()));
+                                    // builder: (context) => const HomeScreen()));
+                                    builder: (context) =>
+                                        const ClientAddressScreen()));
                           } else {
                             // show err dialog
                             showAlertDialog(context);

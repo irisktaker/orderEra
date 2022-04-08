@@ -1,12 +1,12 @@
-class PlaceTypeResponseModel {
+class GetPlaceTypeResponseModel {
   bool? status;
   List<Data>? data;
   String? message;
   String? requestId;
 
-  PlaceTypeResponseModel({this.status, this.data, this.message, this.requestId});
+  GetPlaceTypeResponseModel({this.status, this.data, this.message, this.requestId});
 
-  PlaceTypeResponseModel.fromJson(Map<String, dynamic> json) {
+  GetPlaceTypeResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
       data = <Data>[];
