@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:orderera_dio_http/bloc/models/get_client_address_model.dart';
+import 'package:orderera_dio_http/ui/views/client/add_address/add_client_address_screen.dart';
 import 'package:orderera_dio_http/ui/views/client/address/client_address_bloc.dart';
 
 class ClientAddressScreen extends StatefulWidget {
@@ -21,6 +22,19 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 80,
+        centerTitle: true,
+        title: Text(
+          "OrderEra",
+          style: TextStyle(
+            fontSize: 32,
+            color: Colors.blue[900],
+          ),
+        ),
+      ),
       body: SafeArea(
         child: StreamBuilder<GetClientAddressModel>(
           stream: _bloc.responseStream.stream,
@@ -29,7 +43,7 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
                 ? ListView(
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height - 80,
+                        height: MediaQuery.of(context).size.height - 160,
                         child: ListView.builder(
                           // physics: const NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data!.data!.length,
@@ -66,9 +80,16 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 16.0),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AddClientAddressScreen(),
+                                  ));
+                            },
                             child: Text("add location".toUpperCase())),
-                      )
+                      ),
                     ],
                   )
                 : Container();
