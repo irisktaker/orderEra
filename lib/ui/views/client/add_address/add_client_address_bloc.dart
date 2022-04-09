@@ -10,4 +10,6 @@ class AddClientAddressBloc {
   TextEditingController floorFieldController = TextEditingController();
   TextEditingController identityFieldController = TextEditingController();
   TextEditingController selectOnMapFieldController = TextEditingController();
+
+  
 }

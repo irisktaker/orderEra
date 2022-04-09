@@ -107,6 +107,7 @@ class _AddClientAddressScreenState extends State<AddClientAddressScreen> {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
       child: TextField(
+        
         controller: controller,
         decoration: InputDecoration(
           labelText: title,
