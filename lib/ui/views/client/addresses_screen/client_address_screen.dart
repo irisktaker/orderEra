@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:orderera_dio_http/bloc/models/address/get_client_address_model.dart';
 import 'package:orderera_dio_http/ui/views/client/addresses_screen/client_address_bloc.dart';
 import 'package:orderera_dio_http/ui/views/client/add_address_screen/add_client_address_screen.dart';
+import 'package:orderera_dio_http/ui/widgets/show_alert_dialog.dart';
 
 class ClientAddressScreen extends StatefulWidget {
   const ClientAddressScreen({Key? key}) : super(key: key);
@@ -17,28 +18,6 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
   void initState() {
     super.initState();
     _bloc.callRequest();
-  }
-
-  showAlertDialog(BuildContext context, int id) {
-    Widget okButton = TextButton(
-      child: const Text("OK"),
-      onPressed: () {
-        _bloc.deleteRequest(id);
-        Navigator.pop(context);
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: const Text("Delete"),
-      actions: [
-        okButton,
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
   }
 
   @override
@@ -58,7 +37,7 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
         ),
       ),
       body: SafeArea(
-        child: StreamBuilder<GetClientAddressModel>(
+        child: StreamBuilder<List<Data>>(
           stream: _bloc.responseStream.stream,
           builder: (context, snapshot) {
             return snapshot.hasData
@@ -67,7 +46,7 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height - 160,
                         child: ListView.builder(
-                          itemCount: snapshot.data!.data!.length,
+                          itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             return Container(
                               height: 80,
@@ -81,18 +60,25 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
                                 trailing: IconButton(
                                   icon: const Icon(Icons.more_horiz),
                                   onPressed: () {
-                                    // setState(() {});
                                     showAlertDialog(context,
-                                        snapshot.data!.data![index].addressId!);
+                                        content: const Text(
+                                            "Do you want to delete address?"),
+                                        firstButton: () =>
+                                            Navigator.pop(context),
+                                        secondButton: () {
+                                          _bloc.deleteRequest(
+                                              snapshot.data![index].addressId!);
+                                          _bloc.callRequest();
+                                          Navigator.pop(context);
+                                        });
                                   },
                                 ),
-                                title:
-                                    Text(snapshot.data!.data![index].posName!),
+                                title: Text(snapshot.data![index].posName!),
                                 subtitle: Text(
-                                    "${snapshot.data!.data![index].addressId!}, "
-                                    "${snapshot.data!.data![index].cityId} | "
-                                    "${snapshot.data!.data![index].regionId}, "
-                                    "${snapshot.data!.data![index].locationPhoneNumber}"),
+                                    "${snapshot.data![index].addressId!}, "
+                                    "${snapshot.data![index].cityId} | "
+                                    "${snapshot.data![index].regionId}, "
+                                    "${snapshot.data![index].locationPhoneNumber}"),
                               ),
                             );
                           },
@@ -110,10 +96,10 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        AddClientAddressScreen(
-                                            // index: index,
-                                            ),
-                                  ));
+                                        const AddClientAddressScreen(),
+                                  )).then((value) {
+                                _bloc.callRequest();
+                              });
                             },
                             child: Text("add location".toUpperCase())),
                       ),

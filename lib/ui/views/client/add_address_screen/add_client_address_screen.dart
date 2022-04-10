@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:orderera_dio_http/ui/views/client/add_address_screen/add_client_address_bloc.dart';
+import 'package:orderera_dio_http/ui/widgets/show_alert_dialog.dart';
 
 class AddClientAddressScreen extends StatefulWidget {
-  AddClientAddressScreen({Key? key}) : super(key: key);
-
-  // int index;
+  const AddClientAddressScreen({Key? key}) : super(key: key);
 
   @override
   State<AddClientAddressScreen> createState() => _AddClientAddressScreenState();
@@ -12,8 +11,6 @@ class AddClientAddressScreen extends StatefulWidget {
 
 class _AddClientAddressScreenState extends State<AddClientAddressScreen> {
   final AddClientAddressBloc _bloc = AddClientAddressBloc();
-
-  String? location, city, region, street, pos, building, floor, identity, map;
 
   @override
   Widget build(BuildContext context) {
@@ -52,60 +49,15 @@ class _AddClientAddressScreenState extends State<AddClientAddressScreen> {
             child: Form(
               child: ListView(
                 children: [
-                  buildTextField(
-                      controller: _bloc.locationFieldTypeController,
-                      title: "Location Type",
-                      onChanged: (value) {
-                        location = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.cityFieldController,
-                      title: "City",
-                      onChanged: (value) {
-                        city = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.regionFieldController,
-                      title: "Region",
-                      onChanged: (value) {
-                        region = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.streetFieldController,
-                      title: "Street",
-                      onChanged: (value) {
-                        street = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.nPOSFieldController,
-                      title: "Point of Sale Name",
-                      onChanged: (value) {
-                        pos = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.buildingFieldController,
-                      title: "#Building",
-                      onChanged: (value) {
-                        building = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.floorFieldController,
-                      title: "#Floor",
-                      onChanged: (value) {
-                        floor = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.identityFieldController,
-                      title: "Identity",
-                      onChanged: (value) {
-                        identity = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.selectOnMapFieldController,
-                      title: "Select on Map",
-                      onChanged: (value) {
-                        map = value;
-                      }),
+                  buildTextField(title: "Location Type"),
+                  buildTextField(title: "City"),
+                  buildTextField(title: "Region"),
+                  buildTextField(title: "Street"),
+                  buildTextField(title: "Point of Sale Name"),
+                  buildTextField(title: "#Building"),
+                  buildTextField(title: "#Floor"),
+                  buildTextField(title: "Identity"),
+                  buildTextField(title: "Select on Map"),
                 ],
               ),
             ),
@@ -117,9 +69,18 @@ class _AddClientAddressScreenState extends State<AddClientAddressScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                 ),
                 onPressed: () {
-                  // Stream.value(_bloc.addAddressRequest());
-                  _bloc.addAddressRequest();
-                  Navigator.pop(context);
+                  _bloc.createNewClientAddress().then((value) {
+                    if (value.status!) {
+                      Navigator.pop(context);
+                    } else {
+                      showAlertDialog(
+                        context,
+                        content: Text(value.message!),
+                        firstButton: () => Navigator.pop(context),
+                        secondButton: () {},
+                      );
+                    }
+                  });
                 },
                 child: Text("add".toUpperCase())),
           ),
@@ -128,16 +89,10 @@ class _AddClientAddressScreenState extends State<AddClientAddressScreen> {
     );
   }
 
-  Padding buildTextField({
-    required String title,
-    required TextEditingController? controller,
-    required void Function(String)? onChanged,
-  }) {
+  Padding buildTextField({required String title}) {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
       child: TextField(
-        onChanged: onChanged,
-        controller: controller,
         decoration: InputDecoration(
           labelText: title,
           labelStyle: const TextStyle(

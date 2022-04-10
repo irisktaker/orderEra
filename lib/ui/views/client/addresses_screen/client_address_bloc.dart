@@ -1,40 +1,34 @@
 import 'dart:async';
 
-import 'package:orderera_dio_http/bloc/models/address/get_client_address_model.dart';
-import 'package:orderera_dio_http/bloc/models/address/set_client_address_model.dart';
-import 'package:orderera_dio_http/services/delete/delete_client_address_service.dart';
 import 'package:orderera_dio_http/services/get/get_client_address_service.dart';
-import 'package:orderera_dio_http/services/post/set_client_address_service.dart';
+import 'package:orderera_dio_http/bloc/models/address/get_client_address_model.dart';
+import 'package:orderera_dio_http/services/delete/delete_client_address_service.dart';
 
 class ClientAddressBloc {
-  StreamController<GetClientAddressModel> responseStream =
-      StreamController<GetClientAddressModel>();
+  StreamController<List<Data>> responseStream = StreamController<List<Data>>();
 
-  // StreamController<List<Data>> deleteResponseStream =
-  //     StreamController<List<Data>>();
-
-  List<Data>? listOfAddresses;
+  List<Data>? listOfAddress;
 
   void callRequest() {
     GetClientAddressService().placeTypeService().then((value) {
-      responseStream.sink.add(value);
+      responseStream.sink.add(value.data!);
+      listOfAddress = value.data!;
     });
   }
 
   void deleteRequest(int id) {
     DeleteClientAddressService().deleteClientAddress(id).then((value) {
-      print("message" + value.message!);
-      print("data" + value.requestId!);
+      print(value.message);
 
-      for (var address in listOfAddresses!) {
-        if (address.addressId == id) {
-          listOfAddresses!.removeAt(listOfAddresses![id].addressId!);
+      if (value.status!) {
+        for (int i = 0; i < listOfAddress!.length; i++) {
+          if (listOfAddress![i].addressId == id) {
+            print("ra7aat => " + listOfAddress![i].posName!);
+            listOfAddress!.removeAt(i);
+          }
         }
+        responseStream.sink.add(listOfAddress!);
       }
     });
   }
-
-  // Future<SetClientAddressModel> setClientAddressModel() async {
-  //   return await SetClientAddressService().setClientAddress(clientAddress: );
-  // }
 }
