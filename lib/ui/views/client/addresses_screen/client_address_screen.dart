@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:orderera_dio_http/bloc/models/get_client_address_model.dart';
-import 'package:orderera_dio_http/ui/views/client/add_address/add_client_address_screen.dart';
-import 'package:orderera_dio_http/ui/views/client/address/client_address_bloc.dart';
+import 'package:orderera_dio_http/bloc/models/address/get_client_address_model.dart';
+import 'package:orderera_dio_http/ui/views/client/addresses_screen/client_address_bloc.dart';
+import 'package:orderera_dio_http/ui/views/client/add_address_screen/add_client_address_screen.dart';
 
 class ClientAddressScreen extends StatefulWidget {
   const ClientAddressScreen({Key? key}) : super(key: key);
@@ -17,6 +17,28 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
   void initState() {
     super.initState();
     _bloc.callRequest();
+  }
+
+  showAlertDialog(BuildContext context, int id) {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        _bloc.deleteRequest(id);
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text("Delete"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -45,7 +67,6 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height - 160,
                         child: ListView.builder(
-                          // physics: const NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data!.data!.length,
                           itemBuilder: (context, index) {
                             return Container(
@@ -59,7 +80,11 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
                                 ),
                                 trailing: IconButton(
                                   icon: const Icon(Icons.more_horiz),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    // setState(() {});
+                                    showAlertDialog(context,
+                                        snapshot.data!.data![index].addressId!);
+                                  },
                                 ),
                                 title:
                                     Text(snapshot.data!.data![index].posName!),
@@ -85,7 +110,9 @@ class _ClientAddressScreenState extends State<ClientAddressScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        AddClientAddressScreen(),
+                                        AddClientAddressScreen(
+                                            // index: index,
+                                            ),
                                   ));
                             },
                             child: Text("add location".toUpperCase())),

@@ -1,5 +1,5 @@
 import 'package:orderera_dio_http/bloc/utils/repo/http_request.dart';
-import 'package:orderera_dio_http/bloc/models/get_client_address_model.dart';
+import 'package:orderera_dio_http/bloc/models/address/get_client_address_model.dart';
 
 class GetClientAddressService {
   Future<GetClientAddressModel> placeTypeService() async {

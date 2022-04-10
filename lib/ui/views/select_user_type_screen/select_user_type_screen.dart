@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:orderera_dio_http/bloc/models/get_place_type_response_model.dart';
-import 'package:orderera_dio_http/ui/views/client/address/client_address_screen.dart';
 import 'package:orderera_dio_http/ui/views/home_screen/home_screen.dart';
+import 'package:orderera_dio_http/bloc/models/place_type/get_place_type_response_model.dart';
+import 'package:orderera_dio_http/ui/views/client/addresses_screen/client_address_screen.dart';
 import 'package:orderera_dio_http/ui/views/select_user_type_screen/select_user_type_bloc.dart';
 
 class SelectUserTypeScreen extends StatefulWidget {
