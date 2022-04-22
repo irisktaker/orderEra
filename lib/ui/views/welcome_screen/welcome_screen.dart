@@ -33,6 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       body: StreamBuilder<bool>(
         stream: _bloc.isLoadingStream.stream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
+
           if (snapshot.hasData && snapshot.data) {
             callSelectedLanguageScreen();
           }

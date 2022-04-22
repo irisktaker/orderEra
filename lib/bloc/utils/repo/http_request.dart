@@ -33,7 +33,7 @@ class HttpRequest {
             "Accept-Language": Singleton.instance.selectedLanguage,
           },
           followRedirects: false,
-          validateStatus: (int? statue) {
+          validateStatus: (int? status) {
             return true;
           });
 
