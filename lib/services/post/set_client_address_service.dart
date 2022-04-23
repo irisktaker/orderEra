@@ -9,9 +9,7 @@ class SetClientAddressService {
       methodName: "address",
       body: body,
     );
-
-    print(response);
-
+    print("Add New Client Address: $response");
     return GetClientAddressModel.fromJson(response);
   }
 }

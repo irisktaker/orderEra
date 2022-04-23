@@ -12,7 +12,7 @@ class AddClientAddressScreen extends StatefulWidget {
 class _AddClientAddressScreenState extends State<AddClientAddressScreen> {
   final AddClientAddressBloc _bloc = AddClientAddressBloc();
 
-  String? location, city, region, street, pos, building, floor, identity, map;
+  String? city, region, type, pos, latitude, longitude;
 
   @override
   Widget build(BuildContext context) {
@@ -51,61 +51,32 @@ class _AddClientAddressScreenState extends State<AddClientAddressScreen> {
             child: Form(
               child: ListView(
                 children: [
-                  buildTextField(
-                      controller: _bloc.locationFieldTypeController,
-                      title: "Location Type",
-                      onChanged: (value) {
-                        location = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.cityFieldController,
+                  _buildTextField(
+                      controller: _bloc.cityController,
                       title: "City",
-                      onChanged: (value) {
-                        city = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.regionFieldController,
-                      title: "Region",
-                      onChanged: (value) {
-                        region = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.streetFieldController,
-                      title: "Street",
-                      onChanged: (value) {
-                        street = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.nPOSFieldController,
-                      title: "Point of Sale Name",
-                      onChanged: (value) {
-                        pos = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.buildingFieldController,
-                      title: "#Building",
-                      onChanged: (value) {
-                        building = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.floorFieldController,
-                      title: "#Floor",
-                      onChanged: (value) {
-                        floor = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.identityFieldController,
-                      title: "Identity",
-                      onChanged: (value) {
-                        identity = value;
-                      }),
-                  buildTextField(
-                      controller: _bloc.selectOnMapFieldController,
-                      title: "Select on Map",
-                      onChanged: (value) {
-                        map = value;
-                      }),
-
+                      widget: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.arrow_drop_down))),
+                  _buildTextField(
+                    controller: _bloc.regionController,
+                    title: "Region",
+                  ),
+                  _buildTextField(
+                    controller: _bloc.typeController,
+                    title: "Type",
+                  ),
+                  _buildTextField(
+                    controller: _bloc.posController,
+                    title: "Point of Sale Name",
+                  ),
+                  _buildTextField(
+                    controller: _bloc.latitudeController,
+                    title: "Latitudee",
+                  ),
+                  _buildTextField(
+                    controller: _bloc.longitudeController,
+                    title: "Longitude",
+                  ),
                 ],
               ),
             ),
@@ -117,11 +88,17 @@ class _AddClientAddressScreenState extends State<AddClientAddressScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                 ),
                 onPressed: () {
-                  _bloc.createNewClientAddress(
-                    locationPhone: _bloc.locationFieldTypeController.text,
-                    // cityID: _bloc.cityFieldController.value,
-
-                  ).then((value) {
+                  _bloc
+                      .createNewClientAddress(
+                    // TODO:
+                    latitude: _bloc.latitudeController.text,
+                    longitude: _bloc.longitudeController.text,
+                    posName: _bloc.posController.text,
+                    cityID: int.parse(_bloc.cityController.text),
+                    regionId: int.parse(_bloc.regionController.text),
+                    type: int.parse(_bloc.typeController.text),
+                  )
+                      .then((value) {
                     if (value.status!) {
                       Navigator.pop(context);
                     } else {
@@ -141,19 +118,32 @@ class _AddClientAddressScreenState extends State<AddClientAddressScreen> {
     );
   }
 
-  Padding buildTextField({required String title, required TextEditingController? controller,  required void Function(String)? onChanged,}) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-      child: TextField(
-        controller: controller,
-        onChanged: onChanged,
-        decoration: InputDecoration(
-          labelText: title,
-          labelStyle: const TextStyle(
-            color: Colors.grey,
+  _buildTextField({
+    required String title,
+    required TextEditingController? controller,
+    void Function(String)? onChanged,
+    Widget? widget,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+            child: TextField(
+              controller: controller,
+              onChanged: onChanged,
+              readOnly: widget == null ? false : true,
+              decoration: InputDecoration(
+                labelText: title,
+                labelStyle: const TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+            ),
           ),
         ),
-      ),
+        widget == null ? Container() : Container(child: widget),
+      ],
     );
   }
 }

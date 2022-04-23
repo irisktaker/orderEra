@@ -7,6 +7,7 @@ class GetClientAddressService {
       requestType: REQUEST_TYPE.get,
       methodName: "address?ignore_cache=1",
     );
+    print("Place Type Service: $response");
     return GetClientAddressModel.fromJson(response);
   }
 }

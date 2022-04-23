@@ -3,10 +3,10 @@ import 'package:orderera_dio_http/bloc/utils/singleton/singleton.dart';
 
 enum REQUEST_TYPE { get, post, delete }
 
-class Model {
-  Map<String, dynamic> toJson = {};
-  Model();
-}
+// class Model {
+//   Map<String, dynamic> toJson = {};
+//   Model();
+// }
 
 class HttpRequest {
   ///.. Create a method to handle all request types

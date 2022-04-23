@@ -6,8 +6,8 @@ class DeleteClientAddressService {
     final response = await HttpRequest().callRequest(
       requestType: REQUEST_TYPE.delete,
       methodName: "address/delete?address_id=$id",
-      // queryParam: 
     );
+    print("Delete Client Address id $id: $response");
     return GetClientAddressModel.fromJson(response);
   }
 }

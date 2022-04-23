@@ -7,6 +7,7 @@ class PlaceTypeService {
       requestType: REQUEST_TYPE.get,
       methodName: "user/place-type",
     );
+    print("Place Type Service: $response");
     return GetPlaceTypeResponseModel.fromJson(response);
   }
 }

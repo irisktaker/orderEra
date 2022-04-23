@@ -7,6 +7,7 @@ class WelcomeService {
       requestType: REQUEST_TYPE.get,
       methodName: "welcome?ignore_cache=1",
     );
+    print("Welcome Service: $response");
     return WelcomeResponseModel.fromJson(response);
   }
 }

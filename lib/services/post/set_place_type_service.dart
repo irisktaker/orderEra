@@ -6,11 +6,11 @@ class SetPlaceTypeService {
     final response = await HttpRequest().callRequest(
       requestType: REQUEST_TYPE.post,
       methodName: "user/set-place-type",
-      // queryParam: ,
       body: {
         "place_type": placeTypeID,
       },
     );
+    print("Set Place Type Service: $response");
     return SetPlaceTypeResponseModel.fromJson(response);
   }
 }
